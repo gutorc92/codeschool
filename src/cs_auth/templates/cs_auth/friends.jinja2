@@ -1,0 +1,50 @@
+{% extends "base.jinja2" %}
+
+{% block style %}
+    {{ super() }}
+    <style>
+    #friendship-block{
+        padding: 5px;
+    }
+    #friendship-block p{
+        display: inline;
+        padding-left: 4px;
+    }
+    #friendship-block img{
+        height: 30px;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <template is="dom-bind">
+            <paper-tabs selected="{{ '{{ selected }}' }}" id="contact-tabs">
+                <paper-tab>{{ _('Friends') }}</paper-tab>
+                <paper-tab>{{ _('Colleagues') }}</paper-tab>
+                <paper-tab>{{ _('Staff') }}</paper-tab>
+                <paper-tab>{{ _('Pending') }}</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="{{ '{{ selected }}' }}">
+                <div>
+                    {% for friend in user.friends %}
+                       <div id="friendship-block"> 
+                        {% if friend.profile %}
+                            <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
+                        {% endif %}
+                        <p> {{ friend.username  }} </p>
+                       </div>
+                    {% endfor %} 
+                </div>
+                <div>
+                    {% for collegues in user.colleagues %}
+                       <p> {{ colleagues.username  }} </p>
+                    {% endfor %}
+                </div>
+            </iron-pages>
+
+         </template>
+    
+    
+    </div>
+{% endblock %}

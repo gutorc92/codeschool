@@ -102,7 +102,7 @@
                         <p><a href="/accounts/{{ user.username }}/">{{ _('Profile') }}</a></p>
                         <ul>
                             <li><a href="/accounts/{{ request.user.username }}/edit">{{ _('Edit') }}</a></li>
-                            <li class="disabled-link">Amigos</li>
+                            <li><a href="/auth/friends/">Amigos</a></li>
                             <li class="disabled-link">Configurações</li>
                         </ul>
                     </li>
@@ -196,3 +196,4 @@
     {% endif %}
 </body>
 </html>
+

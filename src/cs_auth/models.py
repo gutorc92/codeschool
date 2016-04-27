@@ -260,7 +260,8 @@ class FriendshipStatus(models.StatusModel):
                     other=self.owner,
                     status='pending').save()
 
-
+    def __str__(self):
+        return self.owner.username + " friendship with " + self.other.username + " is " + self.status
 
 # Mokey patch the user class
 
