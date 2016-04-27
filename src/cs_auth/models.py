@@ -273,7 +273,9 @@ class FriendshipStatus(models.StatusModel):
             else:
                 reciprocal.status = self.STATUS_PENDING
             reciprocal.save()
-                                
+
+    def __str__(self):
+        return self.owner.username + " friendship with " + self.other.username + " is " + self.status
 
 class UserMixin:
     """

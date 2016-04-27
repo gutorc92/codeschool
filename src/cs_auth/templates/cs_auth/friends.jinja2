@@ -1,0 +1,87 @@
+{% extends "base.jinja2" %}
+
+{% block style %}
+    {{ super() }}
+    <style>
+    #friendship-block{
+        padding: 10px;
+    }
+    .friend-block{
+        padding: 5px;
+        display: inline;
+    }
+    .friend-block p{
+        display: inline;
+        padding-left: 4px;
+    }
+    .colleagues-text-block{
+        display: inline;
+    }
+    .colleagues-text-block p{
+        display: block;
+    }
+    .colleagues-text-block img{
+        display: block;
+        height: 10px;
+    }
+    .colleagues-img-block{
+        display: inline;
+    }
+    .colleagues-img-block img{
+        height: 30px;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <template is="dom-bind">
+            <paper-tabs selected="{{ '{{ selected }}' }}" id="contact-tabs">
+                <paper-tab>{{ _('Friends') }}</paper-tab>
+                <paper-tab>{{ _('Colleagues') }}</paper-tab>
+                <paper-tab>{{ _('Staff') }}</paper-tab>
+                <paper-tab>{{ _('Pending') }}</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="{{ '{{ selected }}' }}">
+                <div>
+                    <div id="friendship-block">
+                    {% for friend in user.friends %}
+                            <div class="friend-block">
+                                <a href="/accounts/{{ friend.username }}"> 
+                                {% if friend.profile %}
+                                    <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
+                                {% endif %}
+                                <p> {{ friend.username  }} </p>
+                                </a>
+                            </div>
+                    {% endfor %} 
+                    </div>
+                </div>
+                <div>
+                    <div id="friendship-block">
+                    {% for colleague in user.colleagues %}
+                            <div class="friend-block">
+                                {% if colleague.profile %}
+                                <div class="colleagues-img-block">
+                                <a href="/accounts/{{ colleague.username }}"> 
+                                    <img class="friendiship-user-image" src="{{ colleague.profile.get_mugshot_url }}" />
+                                </a>
+                                </div>
+                                {% endif %}
+                                <div class="colleagues-text-block">
+                                    <p> {{ colleague.username  }} </p>
+                                     <img src="/static/img/add.png" />
+                                </div>
+                            </div>
+                    {% endfor %} 
+                    </div>
+
+                 </div>
+            </iron-pages>
+
+         </template>
+    
+    
+    </div>
+{% endblock %}

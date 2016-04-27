@@ -81,7 +81,6 @@
             <a href="/courses/">Cursos</a>
             <a href="/accounts/login/">Login</a>
         </cs-head>
-
         <div id="content-area">
             <cs-nav id="cs-nav">
                 {% block nav_sections %}
@@ -101,14 +100,13 @@
                             <p><a href="/accounts/{{ user.username }}/">{{ _('Profile') }}</a></p>
                             <ul>
                                 <li><a href="/accounts/{{ request.user.username }}/edit">{{ _('Edit') }}</a></li>
-                                <li class="disabled-link">Amigos</li>
+                                <li><a href="/accounts/friends/">Amigos</a></li>
                                 <li class="disabled-link">Configurações</li>
                             </ul>
                         </nav>
                     {% endif %}
                 {% endblock %}
             </cs-nav>
-
             <main>
                 {% block content %}
                     <section>
@@ -194,3 +192,4 @@
     {% endif %}
 </body>
 </html>
+

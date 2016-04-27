@@ -6,7 +6,7 @@ from django import http
 from django.views.generic import TemplateView
 from userena.forms import AuthenticationForm
 from userena import views
-from codeschool.shortcuts import render, redirect
+from codeschool.shortcuts import render, redirect, render_context
 from codeschool.models import User
 from cs_auth.forms import SignupForm, SignupOptionalForm
 
@@ -88,3 +88,9 @@ def index(request):
         return redirect('/accounts/login/')
     else:
         return redirect('/accounts/%s/' % request.user.username)
+
+def friends(request):
+    return render_context(
+            request, 'cs_auth/friends.jinja2',
+
+    )

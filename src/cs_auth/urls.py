@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from cs_auth.views import LoginView
+from cs_auth.views import LoginView,friends
 from userena import views as views
 from userena.urls import urlpatterns as userena_patterns
 
@@ -20,6 +20,7 @@ def viewfunc(request):
 urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'my-view/$', viewfunc, name='teste'),
+    url('^friends/$', friends, name='user-friends'),
 ]
 
 # Create a list of userena patterns and remove some patterns we don't want to
