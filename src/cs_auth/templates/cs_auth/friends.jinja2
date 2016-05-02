@@ -4,13 +4,17 @@
     {{ super() }}
     <style>
     #friendship-block{
-        padding: 5px;
+        padding: 10px;
     }
-    #friendship-block p{
+    .friend-block{
+        padding: 5px;
+        display: inline;
+    }
+    .friend-block p{
         display: inline;
         padding-left: 4px;
     }
-    #friendship-block img{
+    .friend-block img{
         height: 30px;
     }
     </style>
@@ -27,14 +31,18 @@
             </paper-tabs>
             <iron-pages selected="{{ '{{ selected }}' }}">
                 <div>
+                    <div id="friendship-block">
                     {% for friend in user.friends %}
-                       <div id="friendship-block"> 
-                        {% if friend.profile %}
-                            <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
-                        {% endif %}
-                        <p> {{ friend.username  }} </p>
-                       </div>
+                            <div class="friend-block">
+                                <a href="/accounts/{{ friend.username }}"> 
+                                {% if friend.profile %}
+                                    <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
+                                {% endif %}
+                                <p> {{ friend.username  }} </p>
+                                </a>
+                            </div>
                     {% endfor %} 
+                    </div>
                 </div>
                 <div>
                     {% for collegues in user.colleagues %}
