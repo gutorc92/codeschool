@@ -35,7 +35,6 @@ install:
     - pip install djangorestframework
     - pip install djinga
     - pip install easy-thumbnails
-    - pip install iospec 
     - pip install frozendict
     - pip install generic
     - pip install html2text
