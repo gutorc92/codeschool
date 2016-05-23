@@ -9,27 +9,9 @@ install:
     - pip install -r requirements.txt
     - pip install git+https://github.com/joke2k/faker 
     - pip install lazy 
-    - pip install beautifulsoup4
-    - pip install boxed
     - pip install bs4
-    - pip install csscompressor
     - pip install decorator
-    - pip install Django
-    - pip install django-address
-    - pip install django-annoying
-    - pip install django-appconf
-    - pip install django-autoslug
-    - pip install django-bower
-    - pip install django-compressor
     - pip install django-debug-toolbar
-    - pip install django-extensions
-    - pip install django-guardian
-    - pip install django-jinja
-    - pip install django-model-utils
-    - pip install django-modelcluster
-    - pip install django-picklefield
-    - pip install django-taggit
-    - pip install django-treebeard
     - pip install django-userena
     - pip install django-viewpack
     - pip install djangorestframework
@@ -44,7 +26,6 @@ install:
     - pip install Jinja2
     - pip install jinja2-django-tags
     - pip install judge
-    - pip install lazy
     - pip install Markdown
     - pip install MarkupSafe
     - pip install node
@@ -79,6 +60,7 @@ install:
     - pip install zope.event
     - pip install zope.interface
     - pip install zope.lifecycleevent
+    - pip install ejudge
 # command to run tests
 script: 
     - python src/manage.py test
