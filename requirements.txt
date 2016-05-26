@@ -1,4 +1,7 @@
 django
 unidecode
 generic
+pytest_selenium
+pytest_factoryboy
+mistune
 -e .
