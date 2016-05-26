@@ -3,12 +3,12 @@ import pytest_django
 import pytest_selenium
 from cs_questions.tests.test_app import coding_io_question
 
-
+@pytest.mark.xfail(run=False)
 @pytest.fixture(scope='session')
 def base_url(live_server):
     return live_server.url
 
-
+@pytest.mark.xfail(run=False)
 @pytest.mark.django_db
 def test_io_questions_detail(base_url, selenium, coding_io_question):
     pk = coding_io_question.pk
