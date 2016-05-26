@@ -22,6 +22,18 @@
         {% endif %}
     {% endblock %}
 
+	{% block friends %}
+	<div id="friends-page">
+		<div id="text">
+			<h2 class="banner">{{ _('Friends help') }}</h2>
+			<p>Ask for some friends help</p>
+		</div>
+		<div id="friends-template-render">
+			{% include "cs_auth/friends-min.jinja2"  %}
+		</div>
+	</div>
+	{% endblock %}
+
     <form method="POST" id="{{ form_name }}">
         {% csrf_token %}
         {% block response_form %}
