@@ -2,3 +2,6 @@
 pytest
 boilerplate
 invoke
+pytest_selenium
+pytest_factoryboy
+mistune
