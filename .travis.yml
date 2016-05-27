@@ -22,7 +22,6 @@ script:
     - mkdir -p bower/bower_components
     - mkdir -p collect/static
     - cd src
-    - [ -d codeschool/static/bower_components ] || mkdir -p codeschool/static/bower_components
     - python manage.py bower_install
     - python manage.py collectstatic --noinput 
     - py.test -runxfail
