@@ -2,7 +2,7 @@ import pytest
 from codeschool.testing import *
 from codeschool.models import User
 
-
+@pytest.mark.xfail(run=False)
 @pytest.mark.django_db
 def test_existing_user_can_login(ui, dom, user_with_password, password):
     ui.get()
@@ -12,7 +12,7 @@ def test_existing_user_can_login(ui, dom, user_with_password, password):
     full_name = user_with_password.get_full_name()
     assert full_name in ui.title
 
-
+@pytest.mark.xfail(run=False)
 @pytest.mark.django_db
 def _test_user_can_create_account_and_login(ui, dom):
     ui.get()
