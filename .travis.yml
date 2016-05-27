@@ -9,11 +9,14 @@ sudo: required
 # command to install dependencies
 install:
     - sudo apt-get install npm
-    - npm install bower
     - pip install --upgrade pip 
     - pip install -r requirements.txt
     - pip install --upgrade pytest
     - pip install django-bower    
+
+before_script:
+    - npm install -g bower
+    
 # command to run tests
 script:
     - cd src
