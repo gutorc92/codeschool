@@ -21,4 +21,5 @@ before_script:
 script:
     - cd src
     - python manage.py bower_install 
+    - python manage.py collectstatic
     - py.test -runxfail
