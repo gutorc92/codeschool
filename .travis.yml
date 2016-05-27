@@ -12,5 +12,5 @@ install:
 # command to run tests
 script:
     - cd src
-	- python manage.py bower_install 
+    - python manage.py bower_install 
     - py.test -runxfail
