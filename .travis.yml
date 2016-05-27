@@ -4,9 +4,11 @@ python:
   - "3.4"
   - "3.5"
 
+sudo: required 
+
 # command to install dependencies
 install:
-    - apt-get install npm
+    - sudo apt-get install npm
     - npm install bower
     - pip install --upgrade pip 
     - pip install -r requirements.txt
