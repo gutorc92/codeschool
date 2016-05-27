@@ -20,6 +20,7 @@ before_script:
 # command to run tests
 script:
     - cd src
+    - mkdir -p bower/bower_components
     - python manage.py bower_install 
     - python manage.py collectstatic --noinput
     - py.test -runxfail
