@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^questions/', include('cs_questions.urls')),
     url(r'^polls/', include('cs_polls.urls')),
     url(r'^battles/', include('cs_battles.urls', namespace='battle')),
-    url(r'^pbl/', include('cs_pbl.urls', namespace='pbl'))
+    url(r'^pbl/', include('cs_pbl.urls', namespace='pbl')),
+    url(r'^friendhelp/', include('cs_friendhelp.urls', namespace='friendhelp'))
 ]
 
 

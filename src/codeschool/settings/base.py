@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cs_polls',
     'cs_battles',
     'cs_pbl',
+    'cs_friendhelp',
     'viewpack',
     'srvice',
 

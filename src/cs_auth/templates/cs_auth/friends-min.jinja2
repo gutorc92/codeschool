@@ -1,0 +1,121 @@
+    <style>
+    #friendship-block{
+        padding: 10px;
+    }
+    .friend-block{
+        padding: 5px;
+        display: inline;
+    }
+    .friend-block p{
+        display: inline;
+        padding-left: 4px;
+    }
+    .colleagues-text-block{
+        display: inline;
+    }
+    .colleagues-text-block p{
+        display: block;
+    }
+    .colleagues-text-block img{
+        display: block;
+        height: 10px;
+    }
+    .colleagues-img-block{
+        display: inline;
+    }
+    .colleagues-img-block img{
+        height: 30px;
+    }
+
+    </style>
+
+    <div>
+        <template is="dom-bind">
+            <paper-tabs selected="{{ '{{ selected }}' }}" id="contact-tabs">
+                <paper-tab>{{ _('Friends') }}</paper-tab>
+                <paper-tab>{{ _('Colleagues') }}</paper-tab>
+                <paper-tab>{{ _('Staff') }}</paper-tab>
+                <paper-tab>{{ _('Pending') }}</paper-tab>
+            </paper-tabs>
+            <iron-pages selected="{{ '{{ selected }}' }}">
+                <div>
+                    <div id="friendship-block">
+                    {% for friend in user.friends %}
+                            <div class="friend-block">
+								<button type="button" class="mdl-button show-dialog" value="{{ friend.pk }}" onclick="showDialogFor(this)">
+                                {% if friend.profile %}
+                                    <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
+                                {% endif %}
+                                <p> {{ friend.username  }} </p>
+								</button>
+							</div>
+                    {% endfor %}
+					</div>
+                    <dialog class="mdl-dialog" id="friend-dialog">
+						<h4 class="mdl-dialog__title">{{ _("Do you want to ask for help?") }}</h4>
+						<div class="mdl-dialog__content">
+						  <p>
+							{{ _("You will ask for to make comments to your code?") }}
+						  </p>
+						</div>
+						<div class="mdl-dialog__actions">
+						  <button type="button" class="mdl-button accept" onclick="acceptFriendDialog">{{ _("Yes") }}</button>
+						  <button type="button" class="mdl-button close" id="closeFriendDialog">{{ _("No")}} </button>
+						</div>
+					</dialog>
+					<script>
+						var dialog = $('#friend-dialog');
+						
+						if (! dialog.showModal) {
+						  dialogPolyfill.registerDialog(dialog);
+						}
+						
+						// sdfsdfsd
+						function showDialogFor(button) {
+							dialog.friend_pk = $(button).value();
+						}
+
+						function acceptFriendDialog() {
+							var pk = dialog.friend_pk;
+							alert(pk);
+							srvice("/help/ask-friend", {
+								friend_pk: pk,
+								question_pk: {{ question.pk }},
+								response_pk: {{ response.pk }}
+							});
+							dialog.close();
+						}
+
+						function closeFriendDialog() {
+							dialog.close();
+						} 
+						
+					 </script>
+
+                </div>
+                <div>
+                    <div id="friendship-block">
+                    {% for colleague in user.colleagues %}
+                            <div class="friend-block">
+                                {% if colleague.profile %}
+                                <div class="colleagues-img-block">
+                                <a href="/accounts/{{ colleague.username }}"> 
+                                    <img class="friendiship-user-image" src="{{ colleague.profile.get_mugshot_url }}" />
+                                </a>
+                                </div>
+                                {% endif %}
+                                <div class="colleagues-text-block">
+                                    <p> {{ colleague.username  }} </p>
+                                     <img src="/static/img/add.png" />
+                                </div>
+                            </div>
+                    {% endfor %} 
+                    </div>
+
+                 </div>
+            </iron-pages>
+
+         </template>
+    
+    
+    </div>
