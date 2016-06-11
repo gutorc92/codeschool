@@ -28,21 +28,41 @@
     }
 
     </style>
+				<script>
+						$(document).ready(function(){
+					
+						bindPaperTabs($("#friends-tab")[0]);	
+						console.log("Executou");	
+						$(".show-dialog").click(function(){
+							console.log("Teste");
+							srvice.dialog({sourceId: "friend-dialog"});
+						});	
+						
 
-    <div>
-        <template is="dom-bind">
-            <paper-tabs selected="{{ '{{ selected }}' }}" id="contact-tabs">
+						function acceptFriendDialog() {
+							alert("Agora aqui" + pk);
+							srvice("/help/ask-friend", {
+								friend_pk: pk,
+								question_pk: {{ question.pk }},
+							});
+						}
+					
+						});
+					 </script>
+					 
+    <div id="friends-tab">
+            <paper-tabs selected="0" id="contact-tabs">
                 <paper-tab>{{ _('Friends') }}</paper-tab>
                 <paper-tab>{{ _('Colleagues') }}</paper-tab>
                 <paper-tab>{{ _('Staff') }}</paper-tab>
                 <paper-tab>{{ _('Pending') }}</paper-tab>
             </paper-tabs>
-            <iron-pages selected="{{ '{{ selected }}' }}">
+            <iron-pages selected="0">
                 <div>
                     <div id="friendship-block">
                     {% for friend in user.friends %}
                             <div class="friend-block">
-								<button type="button" class="mdl-button show-dialog" value="{{ friend.pk }}" onclick="showDialogFor(this)">
+								<button type="button" class="mdl-button show-dialog" value="{{ friend.pk }}">
                                 {% if friend.profile %}
                                     <img class="friendiship-user-image" src="{{ friend.profile.get_mugshot_url }}" />
                                 {% endif %}
@@ -51,46 +71,7 @@
 							</div>
                     {% endfor %}
 					</div>
-                    <dialog class="mdl-dialog" id="friend-dialog">
-						<h4 class="mdl-dialog__title">{{ _("Do you want to ask for help?") }}</h4>
-						<div class="mdl-dialog__content">
-						  <p>
-							{{ _("You will ask for to make comments to your code?") }}
-						  </p>
-						</div>
-						<div class="mdl-dialog__actions">
-						  <button type="button" class="mdl-button accept" onclick="acceptFriendDialog">{{ _("Yes") }}</button>
-						  <button type="button" class="mdl-button close" id="closeFriendDialog">{{ _("No")}} </button>
-						</div>
-					</dialog>
-					<script>
-						var dialog = $('#friend-dialog');
-						
-						if (! dialog.showModal) {
-						  dialogPolyfill.registerDialog(dialog);
-						}
-						
-						// sdfsdfsd
-						function showDialogFor(button) {
-							dialog.friend_pk = $(button).value();
-						}
-
-						function acceptFriendDialog() {
-							var pk = dialog.friend_pk;
-							alert(pk);
-							srvice("/help/ask-friend", {
-								friend_pk: pk,
-								question_pk: {{ question.pk }},
-								response_pk: {{ response.pk }}
-							});
-							dialog.close();
-						}
-
-						function closeFriendDialog() {
-							dialog.close();
-						} 
-						
-					 </script>
+                    					
 
                 </div>
                 <div>
@@ -115,7 +96,20 @@
                  </div>
             </iron-pages>
 
-         </template>
     
     
     </div>
+
+	<dialog class="mdl-dialog" id="friend-dialog">
+						<h4 class="mdl-dialog__title">{{ _("Do you want to ask for help?") }}</h4>
+						<div class="mdl-dialog__content">
+						  <p>
+							{{ _("You will ask for to make comments to your code?") }}
+						  </p>
+						</div>
+						<div class="mdl-dialog__actions">
+						  <button type="button" class="mdl-button accept" onclick="acceptFriendDialog()">{{ _("Yes") }}</button>
+						  <button type="button" class="mdl-button close" id="closeFriendDialog" onclick="srvice.closeDialog()">{{ _("No")}} </button>
+						</div>
+					</dialog>
+
