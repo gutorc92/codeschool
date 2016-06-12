@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+	'aloe_django',
 ] + CODESCHOOL_PLUGINS
 
 MIDDLEWARE_CLASSES = [
