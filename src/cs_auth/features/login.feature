@@ -16,3 +16,4 @@ Scenario: Login in
 	And I fill in "Password" with "teste"
 	Then I press "Next"
 	Then I should see "Profile: pedro" 
+	 
