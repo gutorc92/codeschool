@@ -1,4 +1,5 @@
 from aloe import step,world
+from cs_core.steps.steps import create_user
 
 @step(r'I access "(.*)"')
 def access_url(step,url):
