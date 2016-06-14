@@ -3,7 +3,8 @@ from codeschool import models
 
 @step(r'System create user "(.*)"')
 def create_user(step,name):
-	user = models.User(username=name,password="Teste")
+	user = models.User(username=name,email="teste@teste.com")
+	user.set_password("teste")
 	user.save()
 
 
