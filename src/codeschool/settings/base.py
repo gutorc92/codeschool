@@ -180,6 +180,7 @@ TEMPLATES = [
             'extensions': [
                 'codeschool.jinja.ext.DjangoComment',
                 'codeschool.jinja.ext.DjangoLoad',
+                'codeschool.jinja.ext.CodeschoolSubject',
                 'compressor.contrib.jinja2ext.CompressorExtension',
                 'wagtail.wagtailcore.jinja2tags.core',
                 'wagtail.wagtailadmin.jinja2tags.userbar',

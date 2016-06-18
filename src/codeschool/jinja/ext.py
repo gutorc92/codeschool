@@ -3,7 +3,7 @@ from jinja2.exceptions import TemplateSyntaxError
 from jinja2 import lexer
 from jinja2 import nodes
 from jdj_tags.extensions import DjangoI18n
-
+import django.dispatch
 
 class DjangoInternationalizationExtension(DjangoI18n,
                                           InternationalizationExtension):
@@ -50,6 +50,28 @@ class DjangoLoad(Extension):
         args = parser.parse_expression()
         return []
 
+menu_done = django.dispatch.Signal(providing_args=["menu"]) 
+
+class CodeschoolSubject(Extension):
+	tags = {'pldispatch'}
+
+	def parse(self,parser):
+		lineno = next(parser.stream).lineno
+
+        # now we parse a single expression that is used as cache key.
+		args = [parser.parse_expression()]
+		body = parser.parse_statements(['name:endpldispatch'], drop_needle=True)
+		print(lineno,args,body)
+		return nodes.CallBlock(self.call_method("_tratar_dispatch",args),
+								[],[],body).set_lineno(lineno)	
+
+	def _tratar_dispatch(self,name, caller):
+		menu = ["Teste"]
+		menu_done.send(sender=self.__class__, menu = menu)	
+		total = ""
+		for m in menu:
+			total += m
+		return total
 #
 # This is a hacky and ugly solution. Probably we should send a patch to djinga.
 # Ugly as it is, it works ;-)

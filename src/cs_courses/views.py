@@ -8,6 +8,13 @@ from codeschool.decorators import login_required
 from codeschool.shortcuts import render_context, get_object_or_404, redirect
 from cs_courses import models
 from cs_activities.models import Activity
+from django.dispatch import receiver
+from codeschool.jinja.ext import menu_done
+
+@receiver(menu_done)
+def my_handler(sender,**kwargs):
+	menu = kwargs.get("menu")
+	menu.append("Cursos amigos")
 
 
 class CourseViewPack(CRUDViewPack):

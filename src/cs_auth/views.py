@@ -9,6 +9,13 @@ from userena import views
 from codeschool.shortcuts import render, redirect
 from codeschool.models import User
 from cs_auth.forms import SignupForm, SignupOptionalForm
+from django.dispatch import receiver
+from codeschool.jinja.ext import menu_done
+
+@receiver(menu_done)
+def my_handler(sender,**kwargs):
+	menu = kwargs.get("menu")
+	menu.append("Amigos")
 
 
 class LoginView(TemplateView):

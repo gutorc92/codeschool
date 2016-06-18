@@ -99,6 +99,8 @@
                     {% if not disable_profile_section and user is defined %}
                         <nav>
                             <p><a href="/accounts/{{ user.username }}/">{{ _('Profile') }}</a></p>
+							{% pldispatch menu %}
+							{% endpldispatch %}
                             <ul>
                                 <li><a href="/accounts/{{ request.user.username }}/edit">{{ _('Edit') }}</a></li>
                                 <li class="disabled-link">Amigos</li>
