@@ -11,11 +11,15 @@ install:
     - sudo apt-get install npm
     - pip install --upgrade pip 
     - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
     - pip install --upgrade pytest
     - pip install django-bower    
 
 before_script:
     - npm install -g bower
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+    - sleep 5
     
 # command to run tests
 script:
@@ -25,4 +29,6 @@ script:
     - mkdir -p src/codeschool/bower/
     - tar -zxvf bower_components.tar.gz -C src/codeschool/bower/
     - cd src
-    - py.test -runxfail
+    - rm cs_*/migrations/0*
+    - python manage.py makemigrations
+    - python manage.py harvest -v 3 --keepdb cs_auth/features/

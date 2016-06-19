@@ -1,8 +1,8 @@
 -e .
 pytest
-boilerplate
 invoke
 pytest_selenium
 pytest_factoryboy
 mistune
 aloe_django
+aloe_webdriver
