@@ -1,5 +1,6 @@
 from aloe import step,world
 from cs_core.steps.steps import create_user
+import cs_core.steps.browser 
 
 @step(r'I access "(.*)"')
 def access_url(step,url):

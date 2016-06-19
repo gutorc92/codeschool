@@ -1,14 +1,16 @@
 from contextlib import contextmanager
 
 import aloe_webdriver
-from aloe_webdriver.django import visit_page 
+import aloe_webdriver.django
 from aloe import around, world
 from selenium import webdriver
 
-@around.all
+@around.each_example
 @contextmanager
-def with_browser():
+def with_browser(scenario,outline,steps):
     world.browser = webdriver.Firefox()
-    yield
+    yield  
     world.browser.quit()
-    delattr(world, 'browser')
+    delattr(world,'browser')  
+
+
