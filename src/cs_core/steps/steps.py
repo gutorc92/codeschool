@@ -1,5 +1,6 @@
 from aloe import step,world
 from codeschool import models
+from userena.models import UserenaSignup
 
 @step(r'System create user "(.*)"')
 def create_user(step,name):
@@ -13,3 +14,13 @@ def create_user(step,name, password):
 	user.set_password(password)
 	user.save()
 
+@step(r'System create user "(.*)" with password "(.*)" and email "(.*)"')
+def create_user(step,name, password,email):
+	user = models.User(username=name)
+	user.email= email
+	user.set_password(password)
+	user.save()
+
+@step(r'System check permissions')
+def check_permissions(step):
+	UserenaSignup.objects.check_permissions()
