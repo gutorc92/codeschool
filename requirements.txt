@@ -6,4 +6,12 @@ lazy
 django
 unidecode
 generic
+pytest_django
+pytest_selenium
+pytest_factoryboy
+mistune
+lazy
+pygeneric
+psutil
+pexpect
 -e .

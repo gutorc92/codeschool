@@ -1,0 +1,28 @@
+language: python
+
+python:
+  - "3.4"
+  - "3.5"
+
+sudo: required 
+
+# command to install dependencies
+install:
+    - sudo apt-get install npm
+    - pip install --upgrade pip 
+    - pip install -r requirements.txt
+    - pip install --upgrade pytest
+    - pip install django-bower    
+
+before_script:
+    - npm install -g bower
+    
+# command to run tests
+script:
+    - mkdir -p bower
+    - tar -zxvf bower_components.tar.gz -C bower/
+    - mkdir -p collect/static
+    - mkdir -p src/codeschool/bower/
+    - tar -zxvf bower_components.tar.gz -C src/codeschool/bower/
+    - cd src
+    - py.test -runxfail
