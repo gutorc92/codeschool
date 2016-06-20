@@ -249,7 +249,7 @@ class Activity(models.CopyMixin,
             user=user,
             context=context,
             activity=self,
-            **kwargs,
+            **kwargs
         )
         if context.activity_id != self.id:
             context.activity.process_response_item(response)
