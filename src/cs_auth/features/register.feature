@@ -17,14 +17,14 @@ Scenario: Invalid email
 	Then I should see "Enter a valid email address."
 
 Scenario: Duplicate username
-	Given System create user "jteste2" with password "teste" and email "test@testando.com"
+	Given System create user "jteste2" with password "teste"
 	When I visit site page "/accounts/login"
 	Then I should see "Welcome to Codeschool!" 
 	Then I click "SIGN UP"
 	And I fill in "id_first_name" with "Teste"
 	And I fill in "id_last_name" with "Junior"
 	And I fill in "id_username" with "jteste2"
-	And I fill in "id_email" with "test@testando.com"
+	And I fill in "id_email" with "teste@teste.com"
 	And I fill in "id_password1" with "testando"
 	And I fill in "id_password2" with "testando"
 	Then I press "Next"
