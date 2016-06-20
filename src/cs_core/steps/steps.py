@@ -15,7 +15,7 @@ def create_user(step,name, password):
 	user.save()
 
 @step(r'System create user "(.*)" with password "(.*)" and email "(.*)"')
-def create_user(step,name, password,email):
+def create_user_complete(step,name, password,email):
 	user = models.User(username=name)
 	user.email= email
 	user.set_password(password)
