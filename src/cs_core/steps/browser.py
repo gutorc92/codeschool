@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 import aloe_webdriver
 import aloe_webdriver.django
-from aloe import around, world
+from aloe import around, world, step
 from selenium import webdriver
 
 @around.each_example
@@ -14,3 +14,6 @@ def with_browser(scenario,outline,steps):
     delattr(world,'browser')  
 
 
+@step(r'I click in "(.*)"')
+def click(scenario, link):
+  world.browser.find_element_by_link_text(link).click()

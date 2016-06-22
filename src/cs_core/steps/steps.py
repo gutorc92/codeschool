@@ -8,6 +8,12 @@ def create_user(step,name):
 	user.set_password("teste")
 	user.save()
 
+@step(r'System create admin user')
+def create_super_user(step):
+  user = models.User.objects.create_superuser(username="admin",
+                                              email="admin@teste.com",
+                                              password="admin")
+
 @step(r'System create user "(.*)" with password "(.*)"')
 def create_user(step,name, password):
 	user = models.User(username=name,email="teste@teste.com")
