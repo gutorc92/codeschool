@@ -24,7 +24,7 @@ Scenario: Duplicate username
 	And I fill in "id_first_name" with "Teste"
 	And I fill in "id_last_name" with "Junior"
 	And I fill in "id_username" with "jteste2"
-	And I fill in "id_email" with "teste@teste.com"
+	And I fill in "id_email" with "teste2@teste.com"
 	And I fill in "id_password1" with "testando"
 	And I fill in "id_password2" with "testando"
 	Then I press "Next"
