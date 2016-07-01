@@ -1,0 +1,70 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`cs-friend`
+A element to display a friend on codeschool
+
+@demo demo/index.html 
+-->
+
+<dom-module id="cs-friend">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+	  a:link {
+		text-decoration: none;
+	  }
+	  p {
+		color: black;
+		display: inline;
+		position: relative;
+		top: -20px;
+		left: 5px;
+	  }
+	  img {
+		display: inline;
+        border-radius: 50%;
+		height: 50px;
+		width: 50px;
+	  }
+    </style>
+	<div>
+		<a href="[[link]]">
+		<img src="[[image]]">
+		<p>[[name]]</p>
+		</a>
+	<div>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'cs-friend',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'cs-friend',
+        },
+		name: {
+			type: String,
+			value: 'Gustavo'
+		},
+		image: {
+			type: String,
+			value: function () {
+                    return "http://" + location.host + "/components/cs-friend/2b97481.jpg";
+                } 
+		},
+		link: {
+			type: String,
+			value: '/teste'
+		},
+
+      },
+
+    });
+  </script>
+</dom-module>
