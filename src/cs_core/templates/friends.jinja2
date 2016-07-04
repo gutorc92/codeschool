@@ -1,0 +1,27 @@
+{% extends "base.jinja2" %}
+{% block content_title %}
+hello it is me
+{% endblock %}
+{% block content_body %}
+<style>
+	.mydiv{
+		display: inline;
+		width: 500px;
+		margin: 7px auto;
+		padding: 20px;
+		border: solid #bfb9b9 3px;
+	}
+</style>
+<div class="mydiv">
+<cs-friend name="Joao" image="{{ user.profile.get_mugshot_url }}" ></cs-friend>
+</div>
+{% for x in range(0) %}
+<cs-friend name="Calor alberto" link="/accounts/{{ user.username }}/" icon="/static/img/add.png" image="{{ user.profile.get_mugshot_url }}" ></cs-friend>
+{% endfor %}
+{{ user.colleagues.count }}
+{% for friend in user.colleagues %}
+	<div class="mydiv">
+		<cs-friend name="{{ friend.username }}" idowner="{{ user.pk }}" idother="{{ friend.pk }}" icon="/static/img/add.png" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+	</div>
+{% endfor %}
+{% endblock%}

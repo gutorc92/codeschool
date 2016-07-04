@@ -16,27 +16,55 @@ A element to display a friend on codeschool
 	  a:link {
 		text-decoration: none;
 	  }
-      div{
+      .boxout{
 		display: inline;
 	  }
-	  p {
-		color: black;
+	  .boxin{
 		display: inline;
+	  }
+
+	  .textp {
+		color: black;
 		position: relative;
 		left: 5px;
 	  }
-	  img {
+	  .userimage {
 		display: inline;
         border-radius: 50%;
 		height: 50px;
 		width: 50px;
 	  }
+	  .iconimage {
+		display: inline;
+		height: 20px;
+		width: 20px;
+	  }
+
     </style>
-	<div>
-		<a href="[[link]]">
-		<img src="[[image]]">
-		<p>[[name]]</p>
-		</a>
+	<input id="cs-friend-owner" type="hidden" value="[[idowner]]" >
+	<input id="cs-friend-other" type="hidden" value="[[idother]]" >
+	<div class="boxout">
+		<div class="boxin">
+			<a href="[[link]]">
+				<img class="userimage" src="[[image]]">
+			</a>
+		</div>
+		<div class="boxin">
+			<table>
+			<tr>
+				<td>
+					<a href="[[link]]">
+						<p class="textp">[[name]]</p>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img class="iconimage" src="[[icon]]">
+				</td>
+			</tr>
+			</table>
+		</div>
 	</div>
   </template>
 
@@ -60,11 +88,27 @@ A element to display a friend on codeschool
 			type: String,
 			value: '/teste'
 		},
+		icon: {
+			type: String,
+			value: 'teste'
+		},
+		idowner: {
+			type: Number,
+			value: -1
+		},
+		idother: {
+			type: Number,
+			value: -1
+		}
 
       },
 	  ready: function(){
-		$(this).click(function(){
-			srvice.dialog({html: "Teste"})
+		$(".iconimage").click(function(){
+			var idfriend = $("#cs-friend-owner").attr("value");
+			var idother = $("#cs-friend-other").attr("value");
+			if( idfriend != -1 && idother != -1){
+				 srvice("/accounts/addfriendshipstatus/",{idowner: idfriend,idother: idother, status: 1})	
+			}
 		});
 	  }
 	  

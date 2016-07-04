@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.shortcuts import render
 from userena import views as views
 from userena.urls import urlpatterns as userena_patterns
-from cs_core.views import LoginView
+from cs_core.views import LoginView,friends,addFriendshipStatus
 from cs_core.forms import EditProfileForm
 
 
@@ -11,7 +11,13 @@ urlpatterns = [
     url(r'^(?P<username>[\@\.\w-]+)/edit/$',
         views.profile_edit,
         {'edit_profile_form': EditProfileForm},
-        name='profile-edit')
+        name='profile-edit'),
+	url(r'^(?P<username>[\@\.\w-]+)/friends/$',
+        friends,
+		name='friends'),
+    url(r'addfriendshipstatus/$',
+		addFriendshipStatus.as_view(),
+		name="addfriendshipstatus")
 
 ]
 

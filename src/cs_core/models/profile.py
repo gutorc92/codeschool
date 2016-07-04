@@ -292,7 +292,7 @@ class UserMixin:
         return self._filtered('pending')
 
     def _multi_select(self, field):
-        courses = list(self.enrolled_courses.all())
+        courses = list(self.courses_as_student.all())
         if not courses:
             return []
         first, *tail = courses
