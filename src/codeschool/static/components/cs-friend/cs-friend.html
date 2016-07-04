@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <!--
 `cs-friend`
@@ -11,16 +11,18 @@ A element to display a friend on codeschool
   <template>
     <style>
       :host {
-        display: block;
+        display: inline;
       }
 	  a:link {
 		text-decoration: none;
+	  }
+      div{
+		display: inline;
 	  }
 	  p {
 		color: black;
 		display: inline;
 		position: relative;
-		top: -20px;
 		left: 5px;
 	  }
 	  img {
@@ -35,7 +37,7 @@ A element to display a friend on codeschool
 		<img src="[[image]]">
 		<p>[[name]]</p>
 		</a>
-	<div>
+	</div>
   </template>
 
   <script>
@@ -44,10 +46,6 @@ A element to display a friend on codeschool
       is: 'cs-friend',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'cs-friend',
-        },
 		name: {
 			type: String,
 			value: 'Gustavo'
@@ -55,7 +53,7 @@ A element to display a friend on codeschool
 		image: {
 			type: String,
 			value: function () {
-                    return "http://" + location.host + "/components/cs-friend/2b97481.jpg";
+                    return  location.origin + "/components/cs-friend/2b97481.jpg";
                 } 
 		},
 		link: {
@@ -64,6 +62,14 @@ A element to display a friend on codeschool
 		},
 
       },
+	  ready: function(){
+		$(this).click(function(){
+			srvice.dialog({html: "Teste"})
+		});
+	  }
+	  
+
+	  
 
     });
   </script>
