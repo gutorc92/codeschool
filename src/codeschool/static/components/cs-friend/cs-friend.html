@@ -90,7 +90,6 @@ A element to display a friend on codeschool
       properties: {
 		name: {
 			type: String,
-			observer: "_onChanged"
 		},
 		image: {
 			type: String,
@@ -103,6 +102,7 @@ A element to display a friend on codeschool
 		},
 		icon: {
 			type: String,
+			value: "Adicionar"
 		},
 		idowner: {
 			type: Number,
@@ -111,8 +111,14 @@ A element to display a friend on codeschool
 		idother: {
 			type: Number,
 			value: -1
-		}
+		},
+		showButton: {
+			type: Boolean
+		} 
 
+      },
+	  factoryImpl: function(name) {
+        this.name = name;
       },
 	  handleTap: function(){
 			idfriend = this.$.owner.value;
@@ -130,40 +136,73 @@ A element to display a friend on codeschool
 				   });
       }, 
 	  ready: function(){
-				   name = this.name.toString();
-				   names = new Array();
-				   count = (name.match(/ /g) || [] ).length;
-				   if(count == 1){
-						espace = name.search(" ");
-						firstname = name.substring(0,espace);
-						lastname = name.substring(espace+1);
-						names.push(firstname,lastname);
-						
-				   }else if(count == 2){
-						espace = name.search(" ");
-						firstname = name.substring(0,espace);
-						lastname = name.substring(espace+1);
-						espace = lastname.search(" ");
-						firstlastname = lastname.substring(0,espace);
-						names.push(firstname,firstlastname);
-				   }
-				   p = this.$$(".textp");
-				   console.log(p);
-
-				   names.forEach(function(item){
-						sfn = document.createElement('span');
-						sfn.textContent = item;
-						sfn.classList.add("textspan");
-						sfn.classList.add("style-scope");
-						sfn.classList.add("cs-friend");
-						p.appendChild(sfn);
-				   });
-				   console.log(count);
-
+		 this._createName(this.name);		   
+		 console.log(this.showButton);
+		 if(this.showButton == false){
+			node = this.$$(".iconimage");
+			par = node.parentNode;
+			par.removeChild(node);
+		 }
 	  },
-	  _onChanged: function(oldname,name){
-				   
+	  setName: function(name){
+		this._createName(name);
+	  },
+	  setIcon: function(icon){
+		this.icon = icon;
+	  },
+	  setIdOwner: function(idowner){
+		this.idowner = idowner;
+      },
+	  setIdOther: function(idother){
+		this.idother = idother;
+	  },
+      setImage: function(image){
+		this.image = image;
+      },
+	  setLink: function(link){
+		this.link = link;
+	  },
+	  setAll: function(name,icon,idowner,idother,image,link){
+		this._createName(name);
+		this.icon = icon;
+		this.idowner = idowner;
+		this.idother = idother;
+		this.image = image;
+		this.link = link;
+	  },
+	  _createName: function(name){
+		   if (typeof name !== 'undefined' && name !== null) {
+			   name = name.toString();
+			   this.name = name;
+			   names = new Array();
+			   count = (name.match(/ /g) || [] ).length;
+			   if(count == 1){
+					espace = name.search(" ");
+					firstname = name.substring(0,espace);
+					lastname = name.substring(espace+1);
+					names.push(firstname,lastname);
+					
+			   }else if(count == 2){
+					espace = name.search(" ");
+					firstname = name.substring(0,espace);
+					lastname = name.substring(espace+1);
+					espace = lastname.search(" ");
+					firstlastname = lastname.substring(0,espace);
+					names.push(firstname,firstlastname);
+			   }
+			   p = this.$$(".textp");
+
+			   names.forEach(function(item){
+					sfn = document.createElement('span');
+					sfn.textContent = item;
+					sfn.classList.add("textspan");
+					sfn.classList.add("style-scope");
+					sfn.classList.add("cs-friend");
+					p.appendChild(sfn);
+			   });
+		   }
 	  }
+	  
 
     });
   </script>

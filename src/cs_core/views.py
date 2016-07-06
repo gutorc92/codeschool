@@ -11,6 +11,9 @@ from codeschool.models import User
 from cs_core.forms import SignupForm, SignupOptionalForm
 import srvice.decorators 
 from .models.profile import FriendshipStatus
+from django.core.paginator import Paginator
+from django.core import serializers
+import json
 
 class LoginView(TemplateView):
     template_name = 'cs_auth/login.jinja2'
@@ -93,21 +96,33 @@ def index(request):
 def friends(request,username):
 	return render(request,"friends.jinja2",{"user":request.user})
 
+@srvice.api
+def paginatorFriend(request,page):
+	friends = request.user.friends
+	paginator = Paginator(friends,50);
+	page = paginator.page(1)
+	data_total = {}
+	print(page.object_list)
+	for u in page.object_list:
+		data = { "pk": u.pk,"first_name": u.first_name, "last_name": u.last_name, "mugshot": u.profile.get_mugshot_url(), "username": u.username }  	
+		data_total[u.username] = data
+	print(data_total)
+	return json.dumps(data_total)
 
 @srvice.api
 def addFriendshipStatus(request,idowner, idother, status):
 	f = FriendshipStatus.objects.filter(owner_id=idowner,other_id=idother)
-	if not f:
+	of = FriendshipStatus.objects.filter(owner_id=idother,other_id=idowner)
+	if not f and of:
 		f = FriendshipStatus(owner_id=idowner,other_id=idother)
+		f = FriendshipStatus(owner_id=idother,other_id=idowner)
 	else:
 		f = f[0]
-		of = FriendshipStatus.objects.filter(owner_id=idother,other_id=idowner)
 		of = of[0]
 	f.status=FriendshipStatus.STATUS_FRIEND
+	of.status = FriendshipStatus.STATUS_PENDING
 	try:
-		print(f.status)
 		f.save()
-		of.status = FriendshipStatus.STATUS_PENDING
 		of.save()
 	except User.DoesNotExist:
 		return "User does not exists"

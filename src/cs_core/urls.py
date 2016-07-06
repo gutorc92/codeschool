@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.shortcuts import render
 from userena import views as views
 from userena.urls import urlpatterns as userena_patterns
-from cs_core.views import LoginView,friends,addFriendshipStatus
+from cs_core.views import LoginView,friends,addFriendshipStatus, paginatorFriend
 from cs_core.forms import EditProfileForm
 
 
@@ -17,8 +17,10 @@ urlpatterns = [
 		name='friends'),
     url(r'addfriendshipstatus/$',
 		addFriendshipStatus.as_view(),
-		name="addfriendshipstatus")
-
+		name="addfriendshipstatus"),
+	url(r'paginatorFriend/$',
+		paginatorFriend.as_view(),
+		name="paginatorFriend")
 ]
 
 # Let us create a personalized list of userena patterns and remove some

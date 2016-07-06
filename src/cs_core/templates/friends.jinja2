@@ -1,13 +1,63 @@
 {% extends "base.jinja2" %}
 {% block content_title %}
-hello it is me
+Friends
+<script>
+$(document).ready(function(){
+	bindPaperTabs($("#friends-tab")[0]);
+});
+$(window).scroll(function() {
+	if($(window).scrollTop() + $(window).height() > $(document).height() - 500) {
+		srvice("/accounts/paginatorFriend/",{page:1}).
+		then(function(result){ 
+			ob = JSON.parse(result); 
+			var tabs = "." + $("#friends-tab")[0].querySelector('paper-tabs').focusedItem.textContent.replace(/\W/g,"").toLowerCase();
+			console.log(tabs);
+			$.map(ob,function(value,index){ 
+				var friend = document.createElement("cs-friend");
+				console.log(value["first_name"] + " " + value["last_name"]);
+				var name = value["first_name"] + " " + value["last_name"];
+				friend.setAll(name, "Adicionar",{{ user.pk }}, value["pk"],value["mugshot"],value["username"]);
+				$(tabs).append(friend);
+			});  
+		})
+   }
+});
+</script>
 {% endblock %}
 {% block content_body %}
-{% for x in range(50) %}
-{% for friend in user.colleagues %}
-		<cs-friend name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
-{% endfor %}
-{% endfor %}
-<cs-friend name="{{ user.get_full_name }}" idowner="4" idother="3" icon="Aceitar" image="{{ user.profile.get_mugshot_url }}"></cs-friend> 
+<div id="friends-tab">
+            <paper-tabs selected="{{selected}}" id="contact-tabs">
+                <paper-tab>{{ _('Friends') }}</paper-tab>
+                <paper-tab>{{ _('Colleagues') }}</paper-tab>
+                <paper-tab>{{ _('Staff') }}</paper-tab>
+                <paper-tab>{{ _('Pending') }}</paper-tab>
+            </paper-tabs>
+            <iron-pages id="friends-iron-pages" selected="{{selected}}">
+				<div class="friends">
+					{% for x in range(50) %}
+						{% for friend in user.friends %}
+							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+						{% endfor %}
+					{% endfor %}
+				</div>
+				<div class="colleagues">
+					{% for x in range(50) %}
+						{% for friend in user.colleagues %}
+							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+						{% endfor %}
+					{% endfor %}
+				</div>
+				<div class="staff">
+					<p>massa2</p>
+				</div>
+				<div class="pending">
+					{% for x in range(50) %}
+						{% for friend in user.colleagues %}
+							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Aceitar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</iron-pages>
+</div>
 
 {% endblock%}
