@@ -41,8 +41,8 @@ A element to display a friend on codeschool
 	  }
 
     </style>
-	<input id="cs-friend-owner" type="hidden" value="[[idowner]]" >
-	<input id="cs-friend-other" type="hidden" value="[[idother]]" >
+	<input id="owner" type="hidden" value="[[idowner]]" >
+	<input id="other" type="hidden" value="[[idother]]" >
 	<div class="boxout">
 		<div class="boxin">
 			<a href="[[link]]">
@@ -60,7 +60,7 @@ A element to display a friend on codeschool
 			</tr>
 			<tr>
 				<td>
-					<img class="iconimage" src="[[icon]]">
+					<button on-tap="handleTap" style="background: url([[icon]])"/>
 				</td>
 			</tr>
 			</table>
@@ -90,7 +90,9 @@ A element to display a friend on codeschool
 		},
 		icon: {
 			type: String,
-			value: 'teste'
+			value: function () {
+                    return  location.origin + "/components/cs-friend/add.png";
+                } 
 		},
 		idowner: {
 			type: Number,
@@ -102,19 +104,15 @@ A element to display a friend on codeschool
 		}
 
       },
+	  handleTap: function(){
+			idfriend = this.$.owner.value;
+			idother = this.$.other.value;
+			alert(idfriend);
+			alert(idother);
+      }, 
 	  ready: function(){
-		$(".iconimage").click(function(){
-			var idfriend = $("#cs-friend-owner").attr("value");
-			var idother = $("#cs-friend-other").attr("value");
-			if( idfriend != -1 && idother != -1){
-				 srvice("/accounts/addfriendshipstatus/",{idowner: idfriend,idother: idother, status: 1})	
-			}
-		});
+		
 	  }
-	  
-
-	  
-
     });
   </script>
 </dom-module>
