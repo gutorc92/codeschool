@@ -93,6 +93,7 @@ def index(request):
 def friends(request,username):
 	return render(request,"friends.jinja2",{"user":request.user})
 
+
 @srvice.api
 def addFriendshipStatus(request,idowner, idother, status):
 	f = FriendshipStatus.objects.filter(owner_id=idowner,other_id=idother)
@@ -111,7 +112,7 @@ def addFriendshipStatus(request,idowner, idother, status):
 	except User.DoesNotExist:
 		return "User does not exists"
     
-	return idowner + idother + status;
+	return "Sucefully added friend" 
 	
 
 	

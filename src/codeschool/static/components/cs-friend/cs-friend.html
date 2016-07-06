@@ -11,7 +11,9 @@ A element to display a friend on codeschool
   <template>
     <style>
       :host {
-        display: inline;
+        display: -webkit-inline-box;
+		border-style: groove;
+		padding: 8px;
       }
 	  a:link {
 		text-decoration: none;
@@ -27,45 +29,57 @@ A element to display a friend on codeschool
 		color: black;
 		position: relative;
 		left: 5px;
+		word-wrap: break-word;
+		margin: 0;
+		line-height: 15px;
 	  }
 	  .userimage {
 		display: inline;
         border-radius: 50%;
-		height: 50px;
-		width: 50px;
+		height: 70px;
+		width: 70px;
 	  }
 	  .iconimage {
-		display: inline;
-		height: 20px;
-		width: 20px;
+		position: relative;
+		top: 2px;
+		left: 5px;
+		height: 27px;
+		width: 62px;
+		border: 0;
+		padding: 0;
+		min-width: 0;
 	  }
-
+	  .textspan{
+		display: block;
+	  }
     </style>
 	<input id="owner" type="hidden" value="[[idowner]]" >
 	<input id="other" type="hidden" value="[[idother]]" >
-	<div class="boxout">
-		<div class="boxin">
-			<a href="[[link]]">
-				<img class="userimage" src="[[image]]">
-			</a>
-		</div>
-		<div class="boxin">
 			<table>
 			<tr>
 				<td>
 					<a href="[[link]]">
-						<p class="textp">[[name]]</p>
+						<img class="userimage" src="[[image]]">
 					</a>
 				</td>
-			</tr>
-			<tr>
 				<td>
-					<button on-tap="handleTap" style="background: url([[icon]])"/>
+					<table>
+					<tr>
+						<td>
+							<a href="[[link]]">
+								<p class="textp"></p>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button class="iconimage" on-tap="handleTap" >[[icon]]</button>
+						</td>
+					</tr>
+					</table>
 				</td>
 			</tr>
 			</table>
-		</div>
-	</div>
   </template>
 
   <script>
@@ -76,7 +90,7 @@ A element to display a friend on codeschool
       properties: {
 		name: {
 			type: String,
-			value: 'Gustavo'
+			observer: "_onChanged"
 		},
 		image: {
 			type: String,
@@ -86,13 +100,9 @@ A element to display a friend on codeschool
 		},
 		link: {
 			type: String,
-			value: '/teste'
 		},
 		icon: {
 			type: String,
-			value: function () {
-                    return  location.origin + "/components/cs-friend/add.png";
-                } 
 		},
 		idowner: {
 			type: Number,
@@ -107,12 +117,54 @@ A element to display a friend on codeschool
 	  handleTap: function(){
 			idfriend = this.$.owner.value;
 			idother = this.$.other.value;
-			alert(idfriend);
-			alert(idother);
+			node = this.$$(".iconimage");
+			srvice("/accounts/addfriendshipstatus/",{
+				   idowner: idfriend,idother: idother, status: 1}).then(function(result){
+							if(result == "Sucefully added friend"){
+								par = node.parentNode;
+								par.removeChild(node);
+								srvice.dialog({html: result});
+							}
+							
+						
+				   });
       }, 
 	  ready: function(){
-		
+				   name = this.name.toString();
+				   names = new Array();
+				   count = (name.match(/ /g) || [] ).length;
+				   if(count == 1){
+						espace = name.search(" ");
+						firstname = name.substring(0,espace);
+						lastname = name.substring(espace+1);
+						names.push(firstname,lastname);
+						
+				   }else if(count == 2){
+						espace = name.search(" ");
+						firstname = name.substring(0,espace);
+						lastname = name.substring(espace+1);
+						espace = lastname.search(" ");
+						firstlastname = lastname.substring(0,espace);
+						names.push(firstname,firstlastname);
+				   }
+				   p = this.$$(".textp");
+				   console.log(p);
+
+				   names.forEach(function(item){
+						sfn = document.createElement('span');
+						sfn.textContent = item;
+						sfn.classList.add("textspan");
+						sfn.classList.add("style-scope");
+						sfn.classList.add("cs-friend");
+						p.appendChild(sfn);
+				   });
+				   console.log(count);
+
+	  },
+	  _onChanged: function(oldname,name){
+				   
 	  }
+
     });
   </script>
 </dom-module>
