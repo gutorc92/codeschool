@@ -36,14 +36,14 @@ $(window).scroll(function() {
 				<div class="friends">
 					{% for x in range(50) %}
 						{% for friend in user.friends %}
-							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+							<cs-friend showbutton="false" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 					{% endfor %}
 				</div>
 				<div class="colleagues">
 					{% for x in range(50) %}
 						{% for friend in user.colleagues %}
-							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 					{% endfor %}
 				</div>
@@ -53,7 +53,7 @@ $(window).scroll(function() {
 				<div class="pending">
 					{% for x in range(50) %}
 						{% for friend in user.colleagues %}
-							<cs-friend showButton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Aceitar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
+							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Aceitar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 					{% endfor %}
 				</div>

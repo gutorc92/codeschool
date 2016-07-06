@@ -112,9 +112,12 @@ A element to display a friend on codeschool
 			type: Number,
 			value: -1
 		},
-		showButton: {
-			type: Boolean
-		} 
+		showbutton: {
+			type: String
+		},
+		hasButton: {
+			type: String
+		}, 
 
       },
 	  factoryImpl: function(name) {
@@ -137,8 +140,8 @@ A element to display a friend on codeschool
       }, 
 	  ready: function(){
 		 this._createName(this.name);		   
-		 console.log(this.showButton);
-		 if(this.showButton == false){
+		 console.log(this.showbutton);
+		 if(this.showbutton != "true"){
 			node = this.$$(".iconimage");
 			par = node.parentNode;
 			par.removeChild(node);
