@@ -11,7 +11,7 @@ from codeschool.models import User
 from cs_core.forms import SignupForm, SignupOptionalForm
 import srvice.decorators 
 from .models.profile import FriendshipStatus
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.core import serializers
 import json
 
@@ -97,17 +97,32 @@ def friends(request,username):
 	return render(request,"friends.jinja2",{"user":request.user})
 
 @srvice.api
-def paginatorFriend(request,page):
-	friends = request.user.friends
-	paginator = Paginator(friends,50);
-	page = paginator.page(1)
-	data_total = {}
-	print(page.object_list)
-	for u in page.object_list:
-		data = { "pk": u.pk,"first_name": u.first_name, "last_name": u.last_name, "mugshot": u.profile.get_mugshot_url(), "username": u.username }  	
-		data_total[u.username] = data
-	print(data_total)
-	return json.dumps(data_total)
+def paginatorFriend(request,nrpage,search):
+	if (search == "friends"):
+		users = request.user.friends
+	elif(search == "colleagues"):
+		users = request.user.colleagues
+	elif(search == "staff"):
+		users = request.user.staff_contacts
+	elif(search == "peding"):
+		users == request.user.friends_peding
+	else:
+		return None
+	if users: 
+		paginator = Paginator(users,50);
+		try:
+			page = paginator.page(nrpage)
+		except EmptyPage:
+			return "There is no more pages"
+		data_total = {}
+		for u in page.object_list:
+			name = u.first_name + " " + u.last_name
+			data = { "pk": u.pk,"name": name, "mugshot": u.profile.get_mugshot_url(), "username": u.username }  	
+			data_total[u.username] = data
+		print(data_total)
+		return data_total
+	else:
+		return None
 
 @srvice.api
 def addFriendshipStatus(request,idowner, idother, status):

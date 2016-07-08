@@ -32,6 +32,7 @@ A element to display a friend on codeschool
 		word-wrap: break-word;
 		margin: 0;
 		line-height: 15px;
+		width: 70px;
 	  }
 	  .userimage {
 		display: inline;
@@ -48,6 +49,7 @@ A element to display a friend on codeschool
 		border: 0;
 		padding: 0;
 		min-width: 0;
+		display: block;
 	  }
 	  .textspan{
 		display: block;
@@ -113,11 +115,10 @@ A element to display a friend on codeschool
 			value: -1
 		},
 		showbutton: {
-			type: String
+			type: String,
+			value: "true",
+			observer: "_onChagedShowButton"
 		},
-		hasButton: {
-			type: String
-		}, 
 
       },
 	  factoryImpl: function(name) {
@@ -126,26 +127,21 @@ A element to display a friend on codeschool
 	  handleTap: function(){
 			idfriend = this.$.owner.value;
 			idother = this.$.other.value;
-			node = this.$$(".iconimage");
+			var res = "false";
 			srvice("/accounts/addfriendshipstatus/",{
 				   idowner: idfriend,idother: idother, status: 1}).then(function(result){
 							if(result == "Sucefully added friend"){
-								par = node.parentNode;
-								par.removeChild(node);
+								res = "true";
 								srvice.dialog({html: result});
 							}
 							
 						
 				   });
+			this.showbutton = res;
       }, 
 	  ready: function(){
 		 this._createName(this.name);		   
 		 console.log(this.showbutton);
-		 if(this.showbutton != "true"){
-			node = this.$$(".iconimage");
-			par = node.parentNode;
-			par.removeChild(node);
-		 }
 	  },
 	  setName: function(name){
 		this._createName(name);
@@ -165,6 +161,13 @@ A element to display a friend on codeschool
 	  setLink: function(link){
 		this.link = link;
 	  },
+	  setShowButton: function(value){
+		if(value == "true" || value == "false"){
+			this.showbutton = value;
+		}else{
+			this.showbutton = "false";
+		}
+	  },
 	  setAll: function(name,icon,idowner,idother,image,link){
 		this._createName(name);
 		this.icon = icon;
@@ -172,6 +175,14 @@ A element to display a friend on codeschool
 		this.idother = idother;
 		this.image = image;
 		this.link = link;
+	  },
+	  _onChagedShowButton: function(){
+		 if(this.showbutton == "false"){
+			this.$$(".iconimage").style.display = "none";
+		 }else if(this.showbutton == "true"){
+			this.$$(".iconimage").style.display = "block";
+		 }
+
 	  },
 	  _createName: function(name){
 		   if (typeof name !== 'undefined' && name !== null) {

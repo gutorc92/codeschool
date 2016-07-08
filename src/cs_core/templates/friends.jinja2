@@ -1,26 +1,83 @@
 {% extends "base.jinja2" %}
 {% block content_title %}
-Friends
+{{_("Manage your FriendShips") }}
 <script>
+function ManagerFriend(){
+			this.name = "friends";
+			this.nrpage = 1;
+			this.nrmaxpage = 2;
+			this.element = document.querySelector("." + this.name);
+			this.hasbutton = true;
+			
+			this.haspages = function(){
+				if(this.nrpage == this.nrmaxpage){
+					return false;
+				}
+				return true;
+			};
+			this.createFriend = function(hasbutton){
+				var friend = document.createElement("cs-friend");
+				console.log("hasbuntton on createFriend",hasbutton);
+				if(hasbutton){
+					friend.setShowButton("true");
+				}else{
+					friend.setShowButton("false");
+				}
+				return friend;
+			};
+			this.handleResult = function(element,createFriend,hasbutton){
+				return function(data,textStatus,jqXHR){
+					for(key in data){
+						var user = data[key];
+						var friend = createFriend(hasbutton);
+						friend.setAll(user.name, "Adicionar",{{ user.pk }}, user.pk,user.mugshot,user.username);
+						element.appendChild(friend);
+					}
+				}
+			};
+			this.getMoreUsers = function(){
+				if(this.haspages()){
+					srvice("/accounts/paginatorFriend/",{nrpage:this.nrpage,search: this.name}).
+					then(this.handleResult(this.element,this.createFriend,this.hasbutton));
+				}
+			};
+};
 $(document).ready(function(){
 	bindPaperTabs($("#friends-tab")[0]);
-});
-$(window).scroll(function() {
-	if($(window).scrollTop() + $(window).height() > $(document).height() - 500) {
-		srvice("/accounts/paginatorFriend/",{page:1}).
-		then(function(result){ 
-			ob = JSON.parse(result); 
-			var tabs = "." + $("#friends-tab")[0].querySelector('paper-tabs').focusedItem.textContent.replace(/\W/g,"").toLowerCase();
-			console.log(tabs);
-			$.map(ob,function(value,index){ 
-				var friend = document.createElement("cs-friend");
-				console.log(value["first_name"] + " " + value["last_name"]);
-				var name = value["first_name"] + " " + value["last_name"];
-				friend.setAll(name, "Adicionar",{{ user.pk }}, value["pk"],value["mugshot"],value["username"]);
-				$(tabs).append(friend);
-			});  
-		})
-   }
+	var nrpages = new Array();
+	nrpages["friends"] = 1;
+	nrpages["colleagues"] = 1;
+	nrpages["staff"] = 1;
+	nrpages["peding"] = 1;
+	$(window).scroll(function() {
+		if($(document).height() > 30){
+			if($(window).scrollTop() + $(window).height() > $(document).height() - 500) {
+				var search = $("#friends-tab")[0].querySelector('paper-tabs').focusedItem.textContent.replace(/\W/g,"").toLowerCase();
+				srvice("/accounts/paginatorFriend/",{nrpage:nrpages[search],search: search}).
+				then(function(result){ 
+					ob = JSON.parse(result); 
+					if(result == "There is no more pages"){
+						
+					}else{
+						nrpages[search]++;
+					}
+					var tabs = "." + search;
+					console.log(tabs);
+					$.map(ob,function(value,index){ 
+						var friend = document.createElement("cs-friend");
+						var name = value["name"];
+						friend.setAll(name, "Adicionar",{{ user.pk }}, value["pk"],value["mugshot"],value["username"]);
+						if(search == "friends"){
+							friend.setShowButton("false");
+						}else{
+							friend.setShowButton("true");
+						}
+						$(tabs).append(friend);
+					});  
+				})
+		   }
+	   }
+	});
 });
 </script>
 {% endblock %}
@@ -34,28 +91,21 @@ $(window).scroll(function() {
             </paper-tabs>
             <iron-pages id="friends-iron-pages" selected="{{selected}}">
 				<div class="friends">
-					{% for x in range(50) %}
 						{% for friend in user.friends %}
 							<cs-friend showbutton="false" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
-					{% endfor %}
 				</div>
 				<div class="colleagues">
-					{% for x in range(50) %}
 						{% for friend in user.colleagues %}
 							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
-					{% endfor %}
 				</div>
 				<div class="staff">
-					<p>massa2</p>
 				</div>
 				<div class="pending">
-					{% for x in range(50) %}
 						{% for friend in user.colleagues %}
 							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Aceitar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
-					{% endfor %}
 				</div>
 			</iron-pages>
 </div>
