@@ -2,7 +2,7 @@
 {% block content_title %}
 {{_("Manage your FriendShips") }}
 <script>
-function ManagerFriend(){
+function ManagerUsers(name,nrmaxpages,hasbutton){
 			this.name = "friends";
 			this.nrpage = 1;
 			this.nrmaxpage = 2;
@@ -42,40 +42,34 @@ function ManagerFriend(){
 				}
 			};
 };
+function ManagerFriends(){
+	this.components = new Array();
+	this.text = " ";
+		
+	this.addComponents = function(name,nrmaxpage,hasbutton){
+		this.components[name] = new ManagerUsers(name,nrmaxpage,hasbutton);
+	};
+
+	//when the page load, it has not item selected yet
+	this.notify = function(){
+		var search = $("#friends-tab")[0].querySelector('paper-tabs').focusedItem;
+		if(search){
+			console.log("search");
+			search = search.textContent.replace(/\W/g,"").toLowerCase();
+			this.components[search].getMoreUsers();
+		}
+	};
+
+};
 $(document).ready(function(){
+	var manager = new ManagerFriends();
+	manager.addComponents("friends",2,"false");
 	bindPaperTabs($("#friends-tab")[0]);
-	var nrpages = new Array();
-	nrpages["friends"] = 1;
-	nrpages["colleagues"] = 1;
-	nrpages["staff"] = 1;
-	nrpages["peding"] = 1;
 	$(window).scroll(function() {
 		if($(document).height() > 30){
 			if($(window).scrollTop() + $(window).height() > $(document).height() - 500) {
-				var search = $("#friends-tab")[0].querySelector('paper-tabs').focusedItem.textContent.replace(/\W/g,"").toLowerCase();
-				srvice("/accounts/paginatorFriend/",{nrpage:nrpages[search],search: search}).
-				then(function(result){ 
-					ob = JSON.parse(result); 
-					if(result == "There is no more pages"){
-						
-					}else{
-						nrpages[search]++;
-					}
-					var tabs = "." + search;
-					console.log(tabs);
-					$.map(ob,function(value,index){ 
-						var friend = document.createElement("cs-friend");
-						var name = value["name"];
-						friend.setAll(name, "Adicionar",{{ user.pk }}, value["pk"],value["mugshot"],value["username"]);
-						if(search == "friends"){
-							friend.setShowButton("false");
-						}else{
-							friend.setShowButton("true");
-						}
-						$(tabs).append(friend);
-					});  
-				})
-		   }
+				manager.notify();
+ 	 	    }
 	   }
 	});
 });
