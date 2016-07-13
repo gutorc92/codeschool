@@ -26,6 +26,8 @@ function ManagerUsers(name,nrmaxpages,hasbutton){
 				return friend;
 			};
 			this.handleResult = function(element,createFriend,hasbutton){
+				this.nrpage++;
+				console.log(nrpage);
 				return function(data,textStatus,jqXHR){
 					for(key in data){
 						var user = data[key];
@@ -38,7 +40,7 @@ function ManagerUsers(name,nrmaxpages,hasbutton){
 			this.getMoreUsers = function(){
 				if(this.haspages()){
 					srvice("/accounts/paginatorFriend/",{nrpage:this.nrpage,search: this.name}).
-					then(this.handleResult(this.element,this.createFriend,this.hasbutton));
+						then(this.handleResult(this.element,this.createFriend,this.hasbutton));
 				}
 			};
 };
@@ -63,7 +65,9 @@ function ManagerFriends(){
 };
 $(document).ready(function(){
 	var manager = new ManagerFriends();
-	manager.addComponents("friends",2,"false");
+	{% for k in pages %}
+		manager.addComponents("{{ k }}","{{ pages[k][0] }}","{{ pages[k][1] }}");
+	{% endfor %}
 	bindPaperTabs($("#friends-tab")[0]);
 	$(window).scroll(function() {
 		if($(document).height() > 30){
@@ -77,7 +81,7 @@ $(document).ready(function(){
 {% endblock %}
 {% block content_body %}
 <div id="friends-tab">
-            <paper-tabs selected="{{selected}}" id="contact-tabs">
+            <paper-tabs selected="{{selected}}" id="contact-tabs" style="margin-bottom: 7px">
                 <paper-tab>{{ _('Friends') }}</paper-tab>
                 <paper-tab>{{ _('Colleagues') }}</paper-tab>
                 <paper-tab>{{ _('Staff') }}</paper-tab>
@@ -85,19 +89,19 @@ $(document).ready(function(){
             </paper-tabs>
             <iron-pages id="friends-iron-pages" selected="{{selected}}">
 				<div class="friends">
-						{% for friend in user.friends %}
+						{% for friend in pages["friends"][2] %}
 							<cs-friend showbutton="false" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 				</div>
 				<div class="colleagues">
-						{% for friend in user.colleagues %}
+						{% for friend in pages["colleagues"][2] %}
 							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Adicionar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 				</div>
 				<div class="staff">
 				</div>
 				<div class="pending">
-						{% for friend in user.colleagues %}
+						{% for friend in pages["pending"][2] %}
 							<cs-friend showbutton="true" name="{{ friend.get_full_name }}" idowner="{{ user.pk }}" link="/accounts/{{friend.username}}/" idother="{{ friend.pk }}" icon="Aceitar" image="{{ friend.profile.get_mugshot_url }}"></cs-friend> 
 						{% endfor %}
 				</div>

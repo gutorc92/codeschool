@@ -94,7 +94,17 @@ def index(request):
         return redirect('/accounts/%s/' % request.user.username)
 
 def friends(request,username):
-	return render(request,"friends.jinja2",{"user":request.user})
+	user = request.user
+	pages = {}
+	p = Paginator(user.friends,50);
+	pages["friends"] = [p.num_pages,"false", p.object_list]
+	p = Paginator(user.colleagues,50)
+	pages["colleagues"] = [p.num_pages,"true",p.object_list]
+	p = Paginator(user.staff_contacts,50)
+	pages["staff"] = [p.num_pages,"true",p.object_list]
+	p = Paginator(user.friends_pending,50)
+	pages["pending"] = [p.num_pages,"true",p.object_list]
+	return render(request,"friends.jinja2",{"user":request.user, "pages": pages})
 
 @srvice.api
 def paginatorFriend(request,nrpage,search):
@@ -104,8 +114,8 @@ def paginatorFriend(request,nrpage,search):
 		users = request.user.colleagues
 	elif(search == "staff"):
 		users = request.user.staff_contacts
-	elif(search == "peding"):
-		users == request.user.friends_peding
+	elif(search == "pending"):
+		users == request.user.friends_pending
 	else:
 		return None
 	if users: 
